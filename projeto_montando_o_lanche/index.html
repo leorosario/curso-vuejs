@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Montando o Lanche</title>
+
+    <!-- VUE -->
+    <script src="./vue.js"></script>
+
+    <!-- BOOTSTRAP -->
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- As a heading -->
+    <nav class="navbar navbar-light bg-light">
+        <div class="container">
+            <span class="navbar-brand mb-0 h1">Monte o seu Lanche</span>
+        </div>            
+    </nav>
+    <div class="container">
+        <div id="app">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row mt-2">
+                        <div class="col">
+                            <img :src="pao[0]">
+                            <img :src="alface">
+                            <img :src="ketchup">
+                            <img :src="mostarda">
+                            <img :src="maionese">
+                            <img :src="hamburguer">
+                            <img :src="pao[1]">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!-- TIPO DO PÃO -->
+                    <div class="row mt-2">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-header">TIPO DO PÃO</div>
+                                <div class="card-body">                               
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" value="gergelim" v-model="inputTipoPao">
+                                        <label class="form-check-label">Gergelim</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" value="australiano" v-model="inputTipoPao">
+                                        <label class="form-check-label">Australiano</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- SALADAS -->
+                    <div class="row mt-2">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-header">SALADAS</div>
+                                <div class="card-body">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox">
+                                        <label class="form-check-label">Alface</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- MOLHOS -->
+                     <div class="row mt-2">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-header">MOLHOS</div>
+                                <div class="card-body">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox">
+                                        <label class="form-check-label">Ketuchup</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox">
+                                        <label class="form-check-label">Mostarda</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox">
+                                        <label class="form-check-label">Maionese</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TIPO HAMBÚRGUER -->
+                     <div class="row mt-2">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-header">TIPO HAMBÚRGUER</div>
+                                <div class="card-body">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio">
+                                        <label class="form-check-label">Bovino</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio">
+                                        <label class="form-check-label">Frango</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio">
+                                        <label class="form-check-label">Soja</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const vm = new Vue({
+            el: "#app",
+            data: {
+                inputTipoPao: ""
+            },
+            computed: {
+                pao() {
+                    switch(this.inputTipoPao) {
+                        case 'gergelim':
+                            return ['imagens/pao_gergelim_superior.png', 'imagens/pao_gergelim_inferior.png'];
+                        case 'australiano':
+                            return ['imagens/pao_australiano_superior.png', 'imagens/pao_australiano_inferior.png'];
+                        default:
+                            return ['imagens/padrao/pao_superior.png', 'imagens/padrao/pao_inferior.png'];
+                    }                    
+                },
+                alface(){
+                    return "imagens/padrao/alface.png";
+                },
+                ketchup(){
+                    return 'imagens/padrao/molho.png';
+                },
+                maionese(){
+                    return 'imagens/padrao/molho.png';
+                },
+                mostarda(){
+                    return 'imagens/padrao/molho.png';
+                },
+                hamburguer(){
+                    return 'imagens/padrao/hamburguer.png';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
