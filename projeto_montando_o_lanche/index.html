@@ -63,9 +63,9 @@
                         <div class="col">
                             <div class="card">
                                 <div class="card-header">SALADAS</div>
-                                <div class="card-body">
+                                <div class="card-body">                               
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox">
+                                        <input class="form-check-input" type="checkbox" value="alface" v-model="inputSaladas">
                                         <label class="form-check-label">Alface</label>
                                     </div>
                                 </div>
@@ -77,17 +77,17 @@
                         <div class="col">
                             <div class="card">
                                 <div class="card-header">MOLHOS</div>
-                                <div class="card-body">
+                                <div class="card-body">                                 
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox">
+                                        <input class="form-check-input" type="checkbox" value="ketchup" v-model="inputMolhos">
                                         <label class="form-check-label">Ketuchup</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox">
+                                        <input class="form-check-input" type="checkbox" value="mostarda" v-model="inputMolhos">
                                         <label class="form-check-label">Mostarda</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox">
+                                        <input class="form-check-input" type="checkbox" value="maionese" v-model="inputMolhos">
                                         <label class="form-check-label">Maionese</label>
                                     </div>
                                 </div>
@@ -98,19 +98,19 @@
                     <!-- TIPO HAMBÚRGUER -->
                      <div class="row mt-2">
                         <div class="col">
-                            <div class="card">
+                            <div class="card">                                
                                 <div class="card-header">TIPO HAMBÚRGUER</div>
                                 <div class="card-body">
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio">
+                                        <input class="form-check-input" type="radio" value="bovino" v-model="inputHamburguer">
                                         <label class="form-check-label">Bovino</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio">
+                                        <input class="form-check-input" type="radio" value="frango" v-model="inputHamburguer">
                                         <label class="form-check-label">Frango</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio">
+                                        <input class="form-check-input" type="radio" value="soja" v-model="inputHamburguer">
                                         <label class="form-check-label">Soja</label>
                                     </div>
                                 </div>
@@ -126,7 +126,10 @@
         const vm = new Vue({
             el: "#app",
             data: {
-                inputTipoPao: ""
+                inputTipoPao: "",
+                inputSaladas: [],
+                inputMolhos: [],
+                inputHamburguer: ""
             },
             computed: {
                 pao() {
@@ -140,19 +143,40 @@
                     }                    
                 },
                 alface(){
-                    return "imagens/padrao/alface.png";
+                    if(this.inputSaladas.includes("alface")){
+                        return "imagens/alface.png";
+                    }
+                    return "imagens/padrao/alface.png";                  
                 },
                 ketchup(){
+                    if(this.inputMolhos.includes("ketchup")){
+                        return "imagens/ketchup.png";
+                    }
                     return 'imagens/padrao/molho.png';
                 },
                 maionese(){
+                    if(this.inputMolhos.includes("maionese")){
+                        return "imagens/maionese.png";
+                    }
                     return 'imagens/padrao/molho.png';
                 },
                 mostarda(){
+                    if(this.inputMolhos.includes("mostarda")){
+                        return "imagens/mostarda.png";
+                    }
                     return 'imagens/padrao/molho.png';
                 },
                 hamburguer(){
-                    return 'imagens/padrao/hamburguer.png';
+                    switch(this.inputHamburguer) {
+                        case 'bovino':
+                            return 'imagens/bovino.png';
+                        case 'frango':
+                            return 'imagens/frango.png';
+                        case 'soja':
+                            return 'imagens/soja.png';
+                        default:
+                            return 'imagens/padrao/hamburguer.png';
+                    }               
                 }
             }
         });
