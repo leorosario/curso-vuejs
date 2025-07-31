@@ -11,30 +11,27 @@
 </head>
 <body>
     <div id="app">
-        <form ref="formulario">
-            <span>Nome: </span><input type="text" id="inputNome" ref="inputNome">
-            <br>
-            <span>Comentário: </span><textarea></textarea>
-            <br>
-            <button @click.prevent="cadastrar()">Cadastrar</button>
-        </form>
-        <hr>
-        {{ resultado }}
+
     </div>
     <script>
+        
         const vm = new Vue({
-            el: '#app',
+            template: `
+                <div>
+                    <h1>{{ texto1 }}</h1>
+                    <p>{{ texto2 }}</p>
+                </div>
+            `, 
             data: {
-                resultado: ""                
+                texto1: 'Template',
+                texto2: 'Formas alternativas de carregar o template'      
             },
             methods: {
-                cadastrar(){
-                    let nome = this.$refs.inputNome.value;
-                    let comentario = this.$refs.formulario[1].value;
-                    this.resultado = `${nome} disse "${comentario}"`;
-                }
+                
             }          
-        })       
+        });
+        
+        vm.$mount('#app');
        
     </script>
 </body>
