@@ -12,11 +12,14 @@
     "core-js": "^3.6.5",
     "express": "^5.1.0",
     "vue": "^3.0.0",
+    "vue-router": "^4.0.3",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.3",
     "@vue/cli-plugin-eslint": "~4.5.3",
+    "@vue/cli-plugin-router": "~5.0.0",
+    "@vue/cli-plugin-vuex": "~5.0.0",
     "@vue/cli-service": "~4.5.3",
     "@vue/compiler-sfc": "^3.0.0",
     "babel-eslint": "^10.1.0",
@@ -35,7 +38,17 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {
+      "vue/no-static-inline-styles": [
+        "error" , {
+          "allowBinding": false
+      }],
+      "vue/no-duplicate-attributes": [
+        "error" , {
+          "allowCoexistClass": false,
+          "allowCoexistStyle": true
+      }]
+    }
   },
   "browserslist": [
     "> 1%",
