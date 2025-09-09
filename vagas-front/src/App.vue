@@ -2,7 +2,7 @@
   <div>
     <h1>Component App</h1>
     <button @click="desmontarComponente()">Desmontar o componente Conteudo</button>
-    <topo-padrao/>
+    <topo-padrao :funcaoCallback="acao"/>
     <conteudo v-if="visibilidade"></conteudo>
   </div>
 </template>
@@ -18,7 +18,12 @@ export default {
   }),
   methods: {
     desmontarComponente(){
-      this.visibilidade = false
+      this.visibilidade = false;
+    },
+    acao(p1, p2) {
+      console.log('Função de callback definida no componente Pai e chamada no componente Filho');
+      console.log("P1: ", p1);
+      console.log("P2: ", p2);
     }
   },
   components: {
