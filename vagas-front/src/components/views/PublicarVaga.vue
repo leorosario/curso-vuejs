@@ -71,14 +71,25 @@ export default{
   }),
   methods: {
     salvarVaga(){
+      let vagas = JSON.parse(localStorage.getItem('vagas'));
+      //console.log(vagas);
+      if(!vagas) vagas = [];
+
+      
+      let tempoDecorrido = Date.now();
+      let dataAtual = new Date(tempoDecorrido); 
+      
       let vaga = {
         titulo: this.titulo,
         descricao: this.descricao,
         salario: this.salario,
         modalidade: this.modalidade,
-        tipo: this.tipo
+        tipo: this.tipo,
+        publicacao: dataAtual.toISOString()
       }
-      localStorage.setItem('vagas', JSON.stringify(vaga));
+
+      vagas.push(vaga);
+      localStorage.setItem('vagas', JSON.stringify(vagas));
     }
   }
 }
