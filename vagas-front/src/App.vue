@@ -1,34 +1,45 @@
 <template>
   <div>
-    <h1>Component App</h1>
-    <button @click="desmontarComponente()">Desmontar o componente Conteudo</button>
-    <topo-padrao :funcaoCallback="acao"/>
-    <conteudo v-if="visibilidade"></conteudo>
+    
+    <vagas-favoritas></vagas-favoritas>
+    <topo-padrao @navegar="componente = $event"/>
+    <alerta v-if="exibirAlerta">    
+      <template v-slot:titulo>
+          <h5>Título do alerta</h5>
+      </template>     
+      <p>Descrição do alerta</p> 
+    </alerta>
+    <conteudo v-if="visibilidade" :conteudo="componente"></conteudo>
   </div>
 </template>
 
 <script>
+import Alerta from '@/components/comuns/Alerta.vue'
 import Conteudo from '@/components/layouts/Conteudo.vue'
+import VagasFavoritas from '@/components/comuns/VagasFavoritas.vue'
 import TopoPadrao from '@/components/layouts/TopoPadrao.vue'
 
 export default {
   name: 'App',
   data: () => ({
-    visibilidade: true
+    visibilidade: true,
+    componente: 'Home',
+    exibirAlerta: false
   }),
-  methods: {
-    desmontarComponente(){
-      this.visibilidade = false;
-    },
-    acao(p1, p2) {
-      console.log('Função de callback definida no componente Pai e chamada no componente Filho');
-      console.log("P1: ", p1);
-      console.log("P2: ", p2);
-    }
-  },
   components: {
     Conteudo,
-    TopoPadrao
+    TopoPadrao,
+    VagasFavoritas,
+    Alerta
+  },
+  mounted() {
+    this.emitter.on('alerta', () => {
+      this.exibirAlerta = true;
+      setTimeout(() => {
+        this.exibirAlerta = false
+      }, 4000);
+      console.log("Apresentar a mensagem de alerta customizada");
+    });
   }
 }
 </script>
