@@ -187,19 +187,33 @@
                     <div class="mb-3 row">
                         <label class="col-3 col-form-label">Valor limite:</label>
                         <div class="col">
-                            <input type="range" class="form-range" min="0" max="100" step="1">
+                            <input type="range" class="form-range" min="0" max="100" step="1" v-model="form.alcance">
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label class="col-3 col-form-label">Escondido:</label>
                         <div class="col">
-                            <input type="hidden" class="form-control">
+                            <input type="hidden" class="form-control" v-model="form.escondido">
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label class="col-3 col-form-label">Upload:</label>
                         <div class="col">
-                            <input type="file" class="form-control">
+                            <input type="file" class="form-control" multiple @change="selecionarArquivos($event)">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-3 col-form-label">Descrição:</label>
+                        <div class="col">
+                            <textarea class="form-control" rows="3" v-model="form.descricao"></textarea>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-3 col-form-label">Cursos:</label>
+                        <div class="col">
+                            <select class="form-select">
+                                <option v-for="curso in cursos" :key="curso.id">{{ curso.curso }}</option>
+                            </select>
                         </div>
                     </div>
                     <hr>
@@ -302,14 +316,22 @@
                     <span>Cor: {{ form.cor }}</span>
                 </div>
                 <div class="mb-3 row">
-                    <span>Valor limite:</span>
+                    <span>Valor limite: {{ form.alcance }}</span>
                 </div>
                 <div class="mb-3 row">
-                    <span>Escondido:</span>
+                    <span>Escondido: {{ form.escondido }}</span>
                 </div>
                 <div class="mb-3 row">
                     <span>Upload:</span>
-                </div>  
+                    <ul>
+                        <li v-for="(arquivo, index) in form.arquivos" :key="index">{{ arquivo.name }}</li>
+                    </ul>
+                </div>
+                <div class="mb-3 row">
+                    <span>Descrição: </span>
+                    <!-- <pre>{{ form.descricao }}</pre> -->
+                     <div style="white-space: pre;">{{ form.descricao }}</div>
+                </div>
             </div>
         </div>
 
@@ -321,7 +343,13 @@
 
 export default {
     name: 'Formulario',
-    data: () => ({       
+    data: () => ({
+        cursos: [
+            {id: 1, curso: 'Bancos de Dados Relacionais'},
+            {id: 2, curso: 'Desenvolvimento Web Avançado com Vue'},
+            {id: 3, curso: 'Desenvolvimento Web Avançado com Laravel'},
+            {id: 4, curso: 'Curso Completo do Desenvolvedor NodeJS e MongoDB'}
+        ],     
         form: {
             nome: 'Jorge',
             email: 'jorge@teste.com.br',
@@ -343,8 +371,18 @@ export default {
             mes: '',
             semana: '',
             hora: '',
-            cor: ''
+            cor: '#6c757d',
+            alcance: 5,
+            escondido: 'Esse input está escondido',
+            arquivos: {},
+            descricao: ''
         }
-    })
+    }),
+    methods: {
+        selecionarArquivos(event){
+            //console.log(event.target.files);
+            this.form.arquivos = event.target.files;
+        }
+    }
 }
 </script>
