@@ -3,48 +3,14 @@ import App from './App.vue'
 
 const Vue = createApp(App);
 
-Vue.directive('texto', {
-    created(el, binding){ // chamado antes que os atributos do elemento ou ouvintes de event (event listeners) sejam aplicados
-        
-        // console.log(binding.value);
-        if(binding.value?.cor) el.style.color = binding.value.cor;
-        if(binding.value?.tamanhoFonte) el.style.fontSize = binding.value.tamanhoFonte;
+import texto from './directives/texto.js';
+import posicao from './directives/posicao.js';
+import informacao from './directives/informacao.js';
 
-        let totalCaracteres = 25;
-        if(binding.value?.totalCaracteres) totalCaracteres = binding.value.totalCaracteres;
+Vue.directive('texto', texto);
 
+Vue.directive('posicao', posicao);
 
-        let textoOriginal = el.innerText;
-        let tamanhoTextoOriginal = textoOriginal.length;
-        let textoAjustado = ''
-
-        if(tamanhoTextoOriginal > totalCaracteres){
-            // vamos truncar o texto em 22 caracteres e adicionar '...
-            textoAjustado = textoOriginal.substring(0, (totalCaracteres - 3)) + '...';
-        }else{
-            // vamos manter o texto original
-            textoAjustado = textoOriginal;
-        }
-
-        el.innerText = textoAjustado;
-    }
-});
-
-Vue.directive('posicao', {
-    created(el, binding){    
-        const posicoesPossiveis = ['relative', 'fixed', 'absolute'];
-
-        if(posicoesPossiveis.includes(binding.arg)){
-            el.style.position = binding.arg;
-            el.style.top = `${binding.value}px`;
-        }
-    }
-});
-
-Vue.directive('informacao', {
-    created(el, binding){
-        console.log(el, binding.arg, binding.modifiers, binding.value);        
-    }
-});
+Vue.directive('informacao', informacao);
 
 Vue.mount('#app');
