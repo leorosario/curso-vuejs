@@ -59,32 +59,18 @@ export default {
         }
     }),
     methods: {
-        pesquisar() {
-            console.log(this.formPesquisa);
-
-            Object.keys(this.formPesquisa).forEach(chave => {
-                if(this.formPesquisa[chave] == ''){
-                    delete this.formPesquisa[chave];
-                }
-            });
-
-            const queryParams = new URLSearchParams(this.formPesquisa).toString();
-            console.log(queryParams);
-            const url = `http://localhost:3000/contratos?${this.parametrosDeRelacionamento}&${queryParams}`;
-            this.getDadosApi(url);          
+        pesquisar() {            
+            const url = `http://localhost:3000/contratos?${this.parametrosDeRelacionamento}`;
+            this.getDadosApi(url, this.formPesquisa);          
         }
     },
-    created() {
-        const queryParams = new URLSearchParams(this.$route.query).toString();
-        const url = `http://localhost:3000/contratos?${this.parametrosDeRelacionamento}&${queryParams}`;
-        this.getDadosApi(url);
+    created() {       
+        const url = `http://localhost:3000/contratos?${this.parametrosDeRelacionamento}`;
+        this.getDadosApi(url, this.$route.query);
     },
-    beforeRouteUpdate(to, from, next){
-        //console.log(to.query); // objeto => URLSearchParams
-        const queryParams = new URLSearchParams(to.query).toString();
-        const url = `http://localhost:3000/contratos?${this.parametrosDeRelacionamento}&${queryParams}`;
-        console.log(url);
-        this.getDadosApi(url);
+    beforeRouteUpdate(to, from, next){        
+        const url = `http://localhost:3000/contratos?${this.parametrosDeRelacionamento}`;       
+        this.getDadosApi(url, to.query);
         next();
     }
 }
