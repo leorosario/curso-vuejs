@@ -83,15 +83,22 @@
 
         <div class="row">
           <div class="col">
-            <select class="form-select">
-              <option>Id crescente</option>
-              <option>Id decrescrente</option>
-              <option>De A - Z</option>
+            <select class="form-select" v-model="ordenacao">
+              <option value="" disabled>Ordenar Pokémon</option>
+              <option value="1">Id crescente</option>
+              <option value="2">Id decrescrente</option>
+              <option value="3">De A - Z</option>
+              <option value="4">De Z - A (localeCompare)</option>
             </select>
           </div>
         
-          <div class="col">
-            <input type="text" class="form-control" placeholder="Pesquisar pokémon">
+          <div class="col">   
+            <input 
+              type="text" 
+              class="form-control" 
+              placeholder="Pesquisar Pokémon watch"
+              v-model="nomePokemon"
+            >
           </div>
         </div>
 
@@ -99,22 +106,24 @@
           <div class="pokedex-catalogo">
 
             <!-- início listagem dinâmica -->
-            <div 
-              v-for="p in pokemons"
-              :key="p.id"
-              :class="`cartao-pokemon bg-${p.tipo}`"
-              @click="analisarPokemon(p)">
-              <h1>{{ p.id }} {{ p.nome }}</h1>
-              <span>{{ p.tipo }}</span>
-              <div class="cartao-pokemon-img">
-                <transition
-                  appear
-                  enter-active-class="animate__animated animate__fadeInDown"
-                >
-                  <img :src="require(`@/assets/imgs/pokemons/${p.imagem}`)">
-                </transition>                
+            <transition-group name="ordenacao">
+              <div 
+                v-for="p in pokemons"
+                :key="p.id"
+                :class="`cartao-pokemon bg-${p.tipo}`"
+                @click="analisarPokemon(p)">
+                <h1>{{ p.id }} {{ p.nome }}</h1>
+                <span>{{ p.tipo }}</span>
+                <div class="cartao-pokemon-img">
+                  <transition
+                    appear
+                    enter-active-class="animate__animated animate__fadeInDown"
+                  >
+                    <img :src="require(`@/assets/imgs/pokemons/${p.imagem}`)">
+                  </transition>                
+                </div>
               </div>
-            </div>
+            </transition-group>
             <!-- fim listagem dinâmica -->
 
           </div>
@@ -133,8 +142,79 @@ export default {
     exibir: false,
     exibirEvolucoes: false,
     pokemon: {},
-    pokemons: []
+    pokemons: [],
+    ordenacao: '',
+    nomePokemon: ''
   }),
+  watch: {
+    nomePokemon(valorNovo){
+      fetch(`http://localhost:3000/pokemons?nome_like=${valorNovo}`)
+        .then(response => {
+          return response.json()
+        })
+        .then(data => {
+          this.pokemons = data;
+        });
+    },
+    ordenacao(valorNovo){
+      // método sort
+      // return 1 para indicar que a ordem está correta
+      // return -1 para indicar que a ordem está incorreta
+      // return 0 para indicar que são iguais (nada deve ser feito)
+
+      console.log(valorNovo);
+      if(valorNovo == 1){ // ordenação por id crescente
+        this.pokemons.sort((proximo, atual) => {
+          if(atual.id < proximo.id){
+            return 1;
+          }else if(atual.id > proximo.id){
+            return -1;
+          }
+
+          return 0;
+        });
+      }
+
+      if(valorNovo == 2){ // ordenação por id decrescente        
+        this.pokemons.sort((proximo, atual) => {
+          if(atual.id < proximo.id){
+            return -1;
+          }else if(atual.id > proximo.id){
+            return 1;
+          }
+
+          return 0;
+        });
+      }
+
+      if(valorNovo == 3){ // ordenação alfabética A - Z    
+        this.pokemons.sort((proximo, atual) => {
+          if(atual.nome < proximo.nome){
+            return 1;
+          }else if(atual.nome > proximo.nome){
+            return -1;
+          }
+
+          return 0;
+        });
+      }
+
+      if(valorNovo == 4){ // ordenação alfabética Z - A (localeCompare)
+        this.pokemons.sort((proximo, atual) => {
+          // let resultado1 = atual.nome.localeCompare(proximo.nome); // -1 indica que a string de referência vem antes da string do parâmetro
+          // let resultado2 = proximo.nome.localeCompare(atual.nome); // 1 indica que a string de referência vem depois da string do parâmetro
+          // 0 se os valores forem iguais
+
+          // ordenação descrescente
+          return atual.nome.localeCompare(proximo.nome);
+
+          // console.log('atual e o próximo', resultado1);
+          // console.log('próximo e o atual', resultado2);          
+        });
+      }
+
+    }
+  },
   created() {
     fetch("http://localhost:3000/pokemons")
       .then(response => {
@@ -176,7 +256,7 @@ export default {
       if(this.pokemon.habilidades[indice]){       
         this.pokemon.habilidades.splice(indice, 1);
       }
-    }
+    } 
   }
 }
 </script>

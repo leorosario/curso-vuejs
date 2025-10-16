@@ -6,18 +6,20 @@
         <div v-else>
             <table class="table text-white">
                 <tbody>
-                    <tr v-for="(h, indice) in pokemon.habilidades" :key="indice">
-                        <td>{{ h }}</td>
-                        <td class="d-flex justify-content-end">
-                            <button 
-                                type="button" 
-                                class="btn btn-danger btn-sm"
-                                @click="$emit('removerHabilidade', indice)"
-                            >
-                                x
-                            </button>
-                        </td>
-                    </tr>                
+                    <transition-group name="lista">
+                        <tr v-for="(h, indice) in habilidadesOrdenadas" :key="h">
+                            <td>{{ h }}</td>
+                            <td class="d-flex justify-content-end">
+                                <button 
+                                    type="button" 
+                                    class="btn btn-danger btn-sm"
+                                    @click="$emit('removerHabilidade', indice)"
+                                >
+                                    x
+                                </button>
+                            </td>
+                        </tr> 
+                    </transition-group>                                  
                 </tbody>
             </table>
             <input 
@@ -50,6 +52,12 @@ export default {
         adicionarHabilidade(){   
             this.$emit('adicionarHabilidade', this.habilidade);
             this.habilidade = '';
+        }
+    },
+    computed: {
+        habilidadesOrdenadas(){
+            let habilidades = this.pokemon.habilidades;
+            return habilidades.sort();
         }
     }
 }
